@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { Component as C } from 'react';
 import { render as r } from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import DatePicker from 'material-ui/DatePicker';
+import moment from 'moment';
+import Counter from './Counter';
 
-const Stars = ({ length }) =>
-  <span>{Array.from({ length }, (v, i) => ++i).map(() => '⭐️').join('')}</span>;
+class App extends C {
+  constructor() {
+    super();
+    this.state = { Day: 16 };
+  }
+  render() {
+    return (
+      <div><Counter stars={this.state.Day} />
+        <DatePicker
+          onChange={(n = null, date) => {
+            const Day = Number( moment(date).format('DD') );
+            this.setState({ Day });
+          	}
+          }
+          floatingLabelText="Choose date!"
+        />
+      </div>);
+  }
+}
+
 r(
-  <div><Stars length="5" /></div>,
-  document.querySelector('.cont'),
+	<MuiThemeProvider><App /></MuiThemeProvider>,
+	document.querySelector('.cont'),
 );
